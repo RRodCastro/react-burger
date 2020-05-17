@@ -1,3 +1,22 @@
 .App {
   text-align: center;
 }
+
+.show-button {
+
+  background-color: green;
+  color: white;
+  font: inherit;
+  border: 1px solid blue;
+  padding: 8px;
+  cursor: pointer;
+}
+
+
+.show-button:hover{
+  font-weight: bold;
+}
+
+.red {
+  background-color: red;
+}

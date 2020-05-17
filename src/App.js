@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person'
 import Validator from './Validator/Validator'
+import Radium, { StyleRoot } from 'radium'
 
-const style = {
+const charElementStyle = {
   display: 'inline-block',
   padding: '16px',
   margin: '16px',
   textAlign: 'center',
-  border: '1px solid black'
+  border: '1px solid black',
+  // Radium pseudo selector
+  ':hover': {
+    fontWeight: 'bold'
+  }
 }
 
 class App extends Component {
@@ -77,7 +82,7 @@ class App extends Component {
         name={person.name}
       >
         {person.name.split('').map( (ele, charIndex ) => (
-                <div onClick={ () => this.charClickHandlder(charIndex, person.id) } style={style} key={charIndex}>
+                <div onClick={ () => this.charClickHandlder(charIndex, person.id) } style={charElementStyle} key={` ${index}  ${charIndex}`}>
                     {ele}
                 </div>
             ) )}
@@ -88,15 +93,17 @@ class App extends Component {
 
 
     return (
+      <StyleRoot>
       <div className="App">    
           <h1>React App </h1>
-          <button onClick={() => this.showPersonsHandler()} style={{cursor: 'pointer', backgroundColor: '#000080', color: 'white'}}>
+          <button className={ `show-button ${this.state.showPersons ? "red" : ""}` } onClick={() => this.showPersonsHandler()}>
             Show persons ?
           </button>
           {this.state.showPersons ?  persons : <div/>}
       </div>
+      </StyleRoot>
     );
   }
 }
 
-export default App;
+export default Radium(App);
