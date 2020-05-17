@@ -1,20 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.css';
 import Person from './Person/Person'
 import Validator from './Validator/Validator'
-import Radium, { StyleRoot } from 'radium'
 
-const charElementStyle = {
-  display: 'inline-block',
-  padding: '16px',
-  margin: '16px',
-  textAlign: 'center',
-  border: '1px solid black',
-  // Radium pseudo selector
-  ':hover': {
-    fontWeight: 'bold'
-  }
-}
 
 class App extends Component {
 
@@ -82,7 +70,7 @@ class App extends Component {
         name={person.name}
       >
         {person.name.split('').map( (ele, charIndex ) => (
-                <div onClick={ () => this.charClickHandlder(charIndex, person.id) } style={charElementStyle} key={` ${index}  ${charIndex}`}>
+                <div className={classes.charElement }onClick={ () => this.charClickHandlder(charIndex, person.id) } key={` ${index}  ${charIndex}`}>
                     {ele}
                 </div>
             ) )}
@@ -93,17 +81,15 @@ class App extends Component {
 
 
     return (
-      <StyleRoot>
-      <div className="App">    
+      <div className={classes.App}>    
           <h1>React App </h1>
-          <button className={ `show-button ${this.state.showPersons ? "red" : ""}` } onClick={() => this.showPersonsHandler()}>
+          <button className={ classes.showButton } onClick={() => this.showPersonsHandler()}>
             Show persons ?
           </button>
           {this.state.showPersons ?  persons : <div/>}
       </div>
-      </StyleRoot>
     );
   }
 }
 
-export default Radium(App);
+export default App;

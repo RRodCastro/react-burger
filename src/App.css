@@ -2,7 +2,7 @@
   text-align: center;
 }
 
-.show-button {
+.showButton {
 
   background-color: green;
   color: white;
@@ -13,10 +13,22 @@
 }
 
 
-.show-button:hover{
+.showButton:hover{
   font-weight: bold;
 }
 
 .red {
   background-color: red;
+}
+
+.charElement {
+  border: 1px solid black;
+  padding:  16px;
+  display: inline-block;
+  margin: 16px;
+  text-align: center;
+  cursor: pointer;
+}
+.charElement:hover{
+  font-weight: bold;
 }
