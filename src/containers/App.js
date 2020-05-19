@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import Person from './Person/Person'
-import Validator from './Validator/Validator'
-
+import Persons from '../components/Persons/Persons'
 
 class App extends Component {
 
@@ -32,8 +30,6 @@ class App extends Component {
 
     this.setState({persons})
 
-    
-    
   }
 
   showPersonsHandler = () => {
@@ -58,35 +54,19 @@ class App extends Component {
 
   render() {
 
-    const persons = this.state.persons.map((person, index ) => (
-      <Person
-        key={index}
-        name={person.name}
-        age={person.age}
-        deletePersonHandler={() => this.deletePersonHandler(index)}
-        changed={ (event)  => this.nameChangeHandler(event, person.id)}
-      >
-      <Validator
-        name={person.name}
-      >
-        {person.name.split('').map( (ele, charIndex ) => (
-                <div className={classes.charElement }onClick={ () => this.charClickHandlder(charIndex, person.id) } key={` ${index}  ${charIndex}`}>
-                    {ele}
-                </div>
-            ) )}
-      </Validator>
-        
-      </Person>
-    ))
-
-
     return (
       <div className={classes.App}>    
           <h1>React App </h1>
           <button className={ classes.showButton } onClick={() => this.showPersonsHandler()}>
             Show persons ?
           </button>
-          {this.state.showPersons ?  persons : <div/>}
+          {this.state.showPersons ? (
+          <Persons
+            persons={this.state.persons} 
+            deleteHandler={this.deletePersonHandler}
+            changed={this.nameChangeHandler}
+            charClickHandler={this.charClickHandlder}
+          /> ): <div/>}
       </div>
     );
   }

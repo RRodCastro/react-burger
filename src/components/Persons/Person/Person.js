@@ -1,13 +1,13 @@
 import React from 'react';
 import classes from  './Person.css'
+
 const person = (props) => {
 
     return (
         <div className={classes.Person}>
-            My name is
-            <h2 onClick={props.deletePersonHandler }> {props.name}</h2>
-            <h2> {props.age} </h2>
+            <div>My name is {props.name} and {props.age} years old. </div>
             <input
+                stlye={{display: 'block'}}
                 onChange={props.changed}
                 value={props.name}
             />
