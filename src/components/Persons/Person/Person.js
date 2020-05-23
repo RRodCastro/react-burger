@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import classes from './Person.css'
 import wrapper from '../../Hoc/wrapper'
+import PropTypes from 'prop-types'
+
 
 const person = (props) => {
 
@@ -17,6 +19,12 @@ const person = (props) => {
         </Fragment>
     )
 
+}
+
+person.propTypes = {
+    deletePersonHandler: PropTypes.func,
+    name: PropTypes.string,
+    age: PropTypes.number
 }
 
 export default wrapper(person, classes.Person)

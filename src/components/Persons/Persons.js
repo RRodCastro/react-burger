@@ -2,6 +2,7 @@ import React from 'react'
 import Person from './Person/Person'
 import Validator from '../Validator/Validator'
 import wrapper from '../Hoc/wrapper'
+import PropTypes from 'prop-types'
 
 import classes from '../../containers/App.css';
 
@@ -28,5 +29,12 @@ const persons = (props) => (
       ))
 
 )
+
+persons.propTypes = {
+  person: PropTypes.array,
+  deleteHandler: PropTypes.func,
+  changed: PropTypes.func,
+  charClickHandler: PropTypes.func
+}
 
 export default wrapper(persons)

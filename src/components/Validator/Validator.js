@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import wrapper from '../Hoc/wrapper';
+import PropTypes from 'prop-types'
 
 const validator = (props) => {
 
@@ -13,6 +14,10 @@ const validator = (props) => {
             
         </Fragment>
     )
+}
+
+validator.propTypes = {
+    name: PropTypes.string
 }
 
 export default wrapper(validator);
