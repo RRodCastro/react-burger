@@ -1,6 +1,7 @@
 import React from 'react'
 import Person from './Person/Person'
 import Validator from '../Validator/Validator'
+import wrapper from '../Hoc/wrapper'
 
 import classes from '../../containers/App.css';
 
@@ -28,4 +29,4 @@ const persons = (props) => (
 
 )
 
-export default persons
+export default wrapper(persons)

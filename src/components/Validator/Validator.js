@@ -1,17 +1,18 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import wrapper from '../Hoc/wrapper';
 
 const validator = (props) => {
 
     return (
-        <div>
+        <Fragment>
             {props.name.length <= 5 ?
                 <div style={{display: 'block'}}> Name too short!</div> :
                 <div />
             }
             {props.children }
             
-        </div>
+        </Fragment>
     )
 }
 
-export default validator
+export default wrapper(validator);

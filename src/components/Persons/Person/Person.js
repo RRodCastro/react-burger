@@ -1,21 +1,22 @@
-import React from 'react';
-import classes from  './Person.css'
+import React, { Fragment } from 'react';
+import classes from './Person.css'
+import wrapper from '../../Hoc/wrapper'
 
 const person = (props) => {
 
     return (
-        <div className={classes.Person}>
-            <div>My name is {props.name} and {props.age} years old. </div>
+        <Fragment>
+            <div onClick={props.deletePersonHandler} >My name is {props.name} and {props.age} years old. </div>
             <input
-                stlye={{display: 'block'}}
+                stlye={{ display: 'block' }}
                 onChange={props.changed}
                 value={props.name}
             />
             {props.children}
 
-        </div>
+        </Fragment>
     )
 
 }
 
-export default person
+export default wrapper(person, classes.Person)
