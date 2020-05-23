@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons'
+import wrapper from '../components/Hoc/wrapper';
 
 class App extends Component {
 
@@ -55,7 +56,7 @@ class App extends Component {
   render() {
 
     return (
-      <div className={classes.App}>    
+      <Fragment>
           <h1>React App </h1>
           <button className={ classes.showButton } onClick={() => this.showPersonsHandler()}>
             Show persons ?
@@ -67,9 +68,9 @@ class App extends Component {
             changed={this.nameChangeHandler}
             charClickHandler={this.charClickHandlder}
           /> ): <div/>}
-      </div>
-    );
+    </Fragment>
+     );
   }
 }
 
-export default App;
+export default wrapper(App, classes.App );
