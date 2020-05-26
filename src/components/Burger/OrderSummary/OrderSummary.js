@@ -1,5 +1,6 @@
 import React from 'react'
-import Wrapper from '../../../hoc/Wrapper'
+import Wrapper from '../../../hoc/Hoc/Wrapper'
+import Button from '../../UI/Button/Button'
 
 const orderSummary = (props) => {
 
@@ -15,6 +16,8 @@ const orderSummary = (props) => {
                 {ingredients}
             </ul>
             <p>Continue to checkout</p>
+            <Button clicked={props.onCancel} btnType="Danger">  CANCEL </Button>
+            <Button clicked={props.onContinue} btnType="Success">  CONINUE </Button>
         </Wrapper>
     )
 }

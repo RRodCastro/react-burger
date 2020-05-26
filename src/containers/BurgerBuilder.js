@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Aux from '../hoc/Wrapper'
+import Aux from '../hoc/Hoc/Wrapper'
 import Burger from '../components/Burger/Burger';
 import BurguerControls from '../components/Burger/BuildControls/BuildControls'
 import Modal from '../components/UI/Modal/Modal';
@@ -66,6 +66,10 @@ class BurguerBuilder extends Component {
         this.setState({showOrderModal: false})
     }
 
+    purchaseContinueHandler = () => {
+        alert('You continue!');
+    }
+
     
 
     render() {
@@ -74,7 +78,11 @@ class BurguerBuilder extends Component {
         return (
             <Aux>
                 <Modal backdropHanlder={this.onHideOrderModal} show={this.state.showOrderModal}>
-                    <OrderSummary ingredients={this.state.ingredients} />
+                    <OrderSummary
+                        ingredients={this.state.ingredients}
+                        onCancel={this.onHideOrderModal}
+                        onContinue={this.purchaseContinueHandler}
+                    />
                 </Modal>
                 <Burger ingredients={this.state.ingredients} />
                 <BurguerControls
