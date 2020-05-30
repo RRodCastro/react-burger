@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import Aux from '../hoc/Hoc/Wrapper'
-import Burger from '../components/Burger/Burger';
-import BurguerControls from '../components/Burger/BuildControls/BuildControls'
-import Modal from '../components/UI/Modal/Modal';
-import OrderSummary from '../components/Burger/OrderSummary/OrderSummary';
-import axios from '../axios-orders'
-import Spinner from '../components/UI/Spinner/Spinner'
-import withOrderHandler from '../hoc/withErrorHandler/WithOrderHandler'
+import Aux from '../../hoc/Hoc/Wrapper'
+import Burger from '../../components/Burger/Burger';
+import BurguerControls from '../../components/Burger/BuildControls/BuildControls'
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import axios from '../../axios-orders'
+import Spinner from '../../components/UI/Spinner/Spinner'
+import withOrderHandler from '../../hoc/withErrorHandler/WithOrderHandler'
 
 const INGREDIENT_PRICES = {
     salad: 0.5,
@@ -83,7 +83,9 @@ class BurguerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
+
         // store order
+        /*
         const order = {
             ingredients: this.state.ingredients,
             price: this.state.totalPrice,
@@ -109,11 +111,14 @@ class BurguerBuilder extends Component {
                 this.setState({ loading: false, showOrderModal: false });
                 console.log(error)
             })
+        */
+        
+        // Push a new page in stack of pages
 
-
+        this.props.history.push(
+            { pathname: "/checkout",
+            ingredients: this.state.ingredients })
     }
-
-
 
     render() {
         const disabledIngredients = { ...this.state.ingredients }
@@ -131,7 +136,7 @@ class BurguerBuilder extends Component {
                                         onCancel={this.onHideOrderModal}
                                         onContinue={this.purchaseContinueHandler}
                                     />)}
-                        </Modal>)
+                        </Modal>
                 {
                             this.state.ingredients ?
                                 <Aux>
