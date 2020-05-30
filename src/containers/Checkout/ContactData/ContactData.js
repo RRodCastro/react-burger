@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import classes from './ContactData.css'
 import Button from '../../../components/UI/Button/Button'
 import Spinner from '../../../components/UI/Spinner/Spinner'
+import axios from '../../../axios-orders'
 
 class ContactData extends Component {
 
@@ -13,6 +14,39 @@ class ContactData extends Component {
             postalCode: ''
         },
     loading : false
+    }
+
+    orderHandler = (event) => {
+        event.preventDefault()
+        // store order
+        
+        this.setState({ loading: true })
+        const order = {
+            ingredients: this.props.ingredients,
+            price: this.props.totalPrice,
+            customer: {
+                name: 'Name',
+                address: {
+                    street: 'Street 1',
+                    zipCode: '0000',
+                    country: '???'
+                },
+                email: 'test@test.com',
+            },
+            delivery: 'Glovo'
+
+        }
+        
+        axios.post('/orders.json', order)
+            .then((response) => {
+                this.setState({ loading: false})
+                this.props.history.push("/")
+            })
+            .catch(error => {
+                this.setState({ loading: false});
+            })
+        
+     
     }
 
     render () {

@@ -10,12 +10,13 @@ class Checkout extends Component {
             meat: 0,
             cheese: 0,
             bacon: 0
-        }
+        },
+        totalPrice: 0
     }
 
     componentDidMount() {
-        if (this.props.location.ingredients) {
-            this.setState({ ingredients: this.props.location.ingredients })
+        if (this.props.location.ingredients && this.props.location.totalPrice ) {
+            this.setState({ ingredients: this.props.location.ingredients, totalPrice: this.props.location.totalPrice })
         }
     }
 
@@ -24,7 +25,6 @@ class Checkout extends Component {
     }
 
     checkoutContinue = () => {
-        console.log("continue")
         this.props.history.replace( '/checkout/contact-data' );
     }
 
@@ -38,7 +38,7 @@ class Checkout extends Component {
                 />
                 <Route
                     path={this.props.match.path + '/contact-data'} 
-                    component={() => <ContactData />}
+                    render={(props) => <ContactData {...props} totalPrice={this.state.totalPrice} ingredients={this.state.ingredients} />}
                 />
             </div>
         )

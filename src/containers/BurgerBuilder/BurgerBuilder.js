@@ -39,7 +39,6 @@ class BurguerBuilder extends Component {
             })
             .catch(error => {
                 this.setState({ error: true })
-                console.log(error)
             })
     }
 
@@ -82,42 +81,13 @@ class BurguerBuilder extends Component {
         this.setState({ showOrderModal: false })
     }
 
-    purchaseContinueHandler = () => {
-
-        // store order
-        /*
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Name',
-                address: {
-                    street: 'Street 1',
-                    zipCode: '0000',
-                    country: '???'
-                },
-                email: 'test@test.com',
-            },
-            delivery: 'Glovo'
-
-        }
-        this.setState({ loading: true })
-        axios.post('/orders.json', order)
-            .then((response) => {
-                console.log(response)
-                this.setState({ loading: false, showOrderModal: false })
-            })
-            .catch(error => {
-                this.setState({ loading: false, showOrderModal: false });
-                console.log(error)
-            })
-        */
-        
+    purchaseContinueHandler = () => {        
         // Push a new page in stack of pages
 
         this.props.history.push(
             { pathname: "/checkout",
-            ingredients: this.state.ingredients })
+            ingredients: this.state.ingredients,
+            totalPrice: this.state.totalPrice.toFixed(2) })
     }
 
     render() {
