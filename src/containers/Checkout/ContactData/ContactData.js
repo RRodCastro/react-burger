@@ -4,6 +4,14 @@ import Button from '../../../components/UI/Button/Button'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import axios from '../../../axios-orders'
 import Input from '../../../components/UI/Input/Input'
+import { connect } from 'react-redux'
+
+const mapStateToProps = (state) => {
+    return {
+        ingredients: state.ingredients,
+        totalPrice: state.totalPrice
+    }
+}
 
 const zipPattern = /^\d{4}$|^\d{4}-\d{2}$/
 class ContactData extends Component {
@@ -102,7 +110,7 @@ class ContactData extends Component {
         }
         const order = {
             ingredients: this.props.ingredients,
-            price: this.props.price,
+            price: this.props.totalPrice,
             orderData: formData
         }
         axios.post('/orders.json', order)
@@ -192,4 +200,4 @@ class ContactData extends Component {
     }
 }
 
-export default ContactData;
+export default connect(mapStateToProps)(ContactData)

@@ -8,44 +8,38 @@ import axios from '../../axios-orders'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import withOrderHandler from '../../hoc/withErrorHandler/WithOrderHandler'
 import { connect } from 'react-redux'
-
-const INGREDIENT_PRICES = {
-    salad: 0.5,
-    cheese: 0.4,
-    meat: 1.3,
-    bacon: 0.7
-};
+import * as actionTypes from '../../stores/actions'
 
 const mapStateToProps = (state) => {
     return {
-        ingredients: state.ingredients
+        ingredients: state.ingredients,
+        totalPrice: state.totalPrice
     }
 }
 
 const mapDispatchToProps = (dispatch) =>{
     return {
-        onIngredientChange: (ingredients) => dispatch({type: 'UPDATE_INGRED', value: ingredients })
+        onIngredientAdd: (ingredientName) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredientName: ingredientName }),
+        onIngredientRemove: (ingredientName) => dispatch({type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingredientName }),
+
     }
 }
-
 
 class BurguerBuilder extends Component {
 
     state = {
-        ingredients: null,
-        totalPrice: 4,
-        purchasable: false,
         showOrderModal: false,
         loading: false,
         error: false
     }
-
+    
     componentDidMount() {
+
         this.setState({ loading: true })
         // Fetch ingredients
         axios.get("https://testing-9511d.firebaseio.com/ingredients.json")
             .then((response) => {
-                this.props.onIngredientChange(response.data)
+                // this.props.onIngredientChange(response.data)
                 this.setState({
                     loading: false
                 })
@@ -57,36 +51,14 @@ class BurguerBuilder extends Component {
 
     getIngredientsAmount = (type) => this.props.ingredients[type] ? this.props.ingredients[type] : 0
 
-    updatePurchaseState(ingredients) {
-        const purchasable = Object.values(ingredients).reduce((curr, next) => curr + next, 0) > 0
-        this.setState({ purchasable })
-
-    }
+    isPurchasable = () =>  Object.values(this.props.ingredients).reduce((curr, next) => curr + next, 0) > 0
 
     onRemoveHandler = (type) => {
-        const currentQty = this.getIngredientsAmount(type)
-        if (currentQty <= 0) {
-            return;
-        }
-        const ingredients = { ...this.props.ingredients }
-        ingredients[type] = currentQty - 1
-
-        this.props.onIngredientChange(ingredients)
-        const currentPrice = this.state.totalPrice
-        const totalPrice = currentPrice - INGREDIENT_PRICES[type]
-        this.setState({ totalPrice })
-        this.updatePurchaseState(ingredients)
+        this.props.onIngredientRemove(type)
     }
 
     onAddHanlder = (type) => {
-        const currentQty = this.getIngredientsAmount(type)
-        const ingredients = { ...this.props.ingredients }
-        ingredients[type] = currentQty + 1
-        const currentPrice = this.state.totalPrice
-        const totalPrice = currentPrice + INGREDIENT_PRICES[type]
-        this.props.onIngredientChange(ingredients)
-        this.setState({ totalPrice })
-        this.updatePurchaseState(ingredients)
+        this.props.onIngredientAdd(type)
     }
     onOrderHandler = () => {
         this.setState({ showOrderModal: true })
@@ -102,7 +74,7 @@ class BurguerBuilder extends Component {
         this.props.history.push(
             { pathname: "/checkout",
             ingredients: this.props.ingredients,
-            totalPrice: this.state.totalPrice.toFixed(2) })
+            totalPrice: this.props.totalPrice.toFixed(2) })
     }
 
     render() {
@@ -128,9 +100,9 @@ class BurguerBuilder extends Component {
                                     <BurguerControls
                                         added={this.onAddHanlder}
                                         removed={this.onRemoveHandler}
-                                        price={this.state.totalPrice}
+                                        price={this.props.totalPrice}
                                         disabled={disabledIngredients}
-                                        purchasable={this.state.purchasable}
+                                        purchasable={this.isPurchasable()}
                                         onOrderHandler={() => this.onOrderHandler()}
                                     />
                                 </Aux> :
