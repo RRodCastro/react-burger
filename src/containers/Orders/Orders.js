@@ -12,6 +12,7 @@ class Orders extends Component {
     componentWillMount() {
         axios.get("/orders.json")
             .then((res) => {
+                this.console.log(res.data)
                 const orders = Object.keys(res.data)
                     .map((key) => { return { id: key, ...res.data[key] } })
                 this.setState({ loading: false, orders })
@@ -23,6 +24,7 @@ class Orders extends Component {
     }
 
     render() {
+        console.log("Rendering...")
         return (
             <div>
                 {this.state.orders.map((order) => (

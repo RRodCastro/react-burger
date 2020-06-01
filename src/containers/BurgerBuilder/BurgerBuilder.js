@@ -4,50 +4,38 @@ import Burger from '../../components/Burger/Burger';
 import BurguerControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
-import axios from '../../axios-orders'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import withOrderHandler from '../../hoc/withErrorHandler/WithOrderHandler'
 import { connect } from 'react-redux'
-import * as actionTypes from '../../stores/actions'
+import * as burgerBulderActions from '../../stores/actions/index'
+import axios from '../../axios-orders'
 
 const mapStateToProps = (state) => {
     return {
         ingredients: state.ingredients,
-        totalPrice: state.totalPrice
+        totalPrice: state.totalPrice,
+        error: state.error
     }
 }
 
 const mapDispatchToProps = (dispatch) =>{
     return {
-        onIngredientAdd: (ingredientName) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredientName: ingredientName }),
-        onIngredientRemove: (ingredientName) => dispatch({type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingredientName }),
-
+        onIngredientAdd: (ingredientName) => dispatch(burgerBulderActions.addIngredient(ingredientName)),
+        onIngredientRemove: (ingredientName) => dispatch(burgerBulderActions.removeIngredient(ingredientName)),
+        onFetchIngredients: () => dispatch(burgerBulderActions.fetchIngredients())
     }
 }
 
 class BurguerBuilder extends Component {
 
     state = {
-        showOrderModal: false,
-        loading: false,
-        error: false
+        showOrderModal: false
+    }
+
+    componentDidMount(){
+        this.props.onFetchIngredients()
     }
     
-    componentDidMount() {
-
-        this.setState({ loading: true })
-        // Fetch ingredients
-        axios.get("https://testing-9511d.firebaseio.com/ingredients.json")
-            .then((response) => {
-                // this.props.onIngredientChange(response.data)
-                this.setState({
-                    loading: false
-                })
-            })
-            .catch(error => {
-                this.setState({ error: true })
-            })
-    }
 
     getIngredientsAmount = (type) => this.props.ingredients[type] ? this.props.ingredients[type] : 0
 
@@ -82,10 +70,10 @@ class BurguerBuilder extends Component {
         for (const key in disabledIngredients) { disabledIngredients[key] = disabledIngredients[key] <= 0 }
         return (
             <Aux>
-                {this.state.error ? <p> There was an error</p>:
+                {this.props.error ? <p> There was an error</p>:
                     <Aux>
                         <Modal backdropHanlder={this.onHideOrderModal} show={this.state.showOrderModal}>
-                            {this.state.loading ? <Spinner /> :
+                            {!this.props.ingredients ? <Spinner /> :
                                 (
                                     <OrderSummary
                                         ingredients={this.props.ingredients ? this.props.ingredients : {}}
@@ -94,7 +82,7 @@ class BurguerBuilder extends Component {
                                     />)}
                         </Modal>
                 {
-                            !this.state.loading ?
+                            this.props.ingredients ?
                                 <Aux>
                                     <Burger ingredients={this.props.ingredients} />
                                     <BurguerControls
