@@ -7,22 +7,23 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner'
 import withOrderHandler from '../../hoc/withErrorHandler/WithOrderHandler'
 import { connect } from 'react-redux'
-import * as burgerBulderActions from '../../stores/actions/index'
+import * as actions from '../../stores/actions/index'
 import axios from '../../axios-orders'
 
 const mapStateToProps = (state) => {
     return {
-        ingredients: state.ingredients,
-        totalPrice: state.totalPrice,
-        error: state.error
+        ingredients: state.burgerBuilder.ingredients,
+        totalPrice: state.burgerBuilder.totalPrice,
+        error: state.burgerBuilder.error
     }
 }
 
 const mapDispatchToProps = (dispatch) =>{
     return {
-        onIngredientAdd: (ingredientName) => dispatch(burgerBulderActions.addIngredient(ingredientName)),
-        onIngredientRemove: (ingredientName) => dispatch(burgerBulderActions.removeIngredient(ingredientName)),
-        onFetchIngredients: () => dispatch(burgerBulderActions.fetchIngredients())
+        onIngredientAdd: (ingredientName) => dispatch(actions.addIngredient(ingredientName)),
+        onIngredientRemove: (ingredientName) => dispatch(actions.removeIngredient(ingredientName)),
+        onFetchIngredients: () => dispatch(actions.fetchIngredients()),
+        onInitPurchase: () => dispatch(actions.purchaseInit())
     }
 }
 
@@ -57,12 +58,10 @@ class BurguerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {        
+        this.props.onInitPurchase()
         // Push a new page in stack of pages
 
-        this.props.history.push(
-            { pathname: "/checkout",
-            ingredients: this.props.ingredients,
-            totalPrice: this.props.totalPrice.toFixed(2) })
+        this.props.history.push({ pathname: "/checkout"})
     }
 
     render() {

@@ -6,7 +6,8 @@ import { connect } from 'react-redux'
 
 const mapStateToProps = (state) => {
     return {
-        ingredients: state.ingredients
+        ingredients: state.burgerBuilder.ingredients,
+        purchased: state.order.purchased
     }
 }
 
@@ -21,10 +22,12 @@ class Checkout extends Component {
     }
 
     render() {
-        let summary = <Redirect path="/" />
+        let summary = <Redirect to="/" />
+        const purchasedRedirect = this.props.purchased ? <Redirect to="/" /> : null
         if (this.props.ingredients) {
             summary = (
             <div>
+                {purchasedRedirect}
                 <CheckoutSummary
                     ingredients={this.props.ingredients}
                     checkoutCancel={this.checkoutCancel}
