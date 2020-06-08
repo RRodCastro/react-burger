@@ -21,3 +21,4 @@ yarn-debug.log*
 yarn-error.log*
 package-lock.json
 src/assests/images/burger-logo.png
+src/utils/constants.js
