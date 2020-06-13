@@ -10,13 +10,14 @@ const mapStateToProps = (state) => {
     return {
         orders: state.order.orders,
         loading: state.order.loading,
-        token: state.auth.token
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        startFetchOrders: (token) => dispatch(fetchOrders(token))
+        startFetchOrders: (token, userId) => dispatch(fetchOrders(token, userId))
 
     }
 }
@@ -25,7 +26,7 @@ class Orders extends Component {
     // TODO: Delete Orders
 
     componentWillMount() {
-        this.props.startFetchOrders(this.props.token)
+        this.props.startFetchOrders(this.props.token, this.props.userId)
     }
 
     render() {

@@ -5,20 +5,23 @@ import classes from './Auth.css'
 import * as actions from '../../stores/actions/index'
 import { connect } from 'react-redux'
 import Spinner from '../../components/UI/Spinner/Spinner'
-
+import {  Redirect } from 'react-router-dom'
 
 const mapStateToProps = (state) => {
     return {
         error: state.auth.error,
         loading: state.auth.loading,
-        token: state.auth.token
+        token: state.auth.token,
+        buildingBurger: state.burgerBuilder.building,
+        authRedirectPath: state.auth.authRedirectPath
     }
 
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onAuth: (email, pwd, isSignup) => dispatch(actions.auth(email, pwd, isSignup))
+        onAuth: (email, pwd, isSignup) => dispatch(actions.auth(email, pwd, isSignup)),
+        onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirect("/"))
     }
 }
 
@@ -59,10 +62,17 @@ class Auth extends Component {
         isSignup: false
     }
 
+    componentDidMount() {
+        if (!this.props.buildingBurger && this.props.authRedirectPath !== "/" ){
+            this.props.onSetAuthRedirectPath()
+        }
+
+    }
+
     onSubmitHandler = (event) => {
         event.preventDefault();
         const autFrom = { ...this.state.authForm }
-        this.props.onAuth(autFrom.email.value, autFrom.password.value, this.state.isSignup, this.state.isSignup)
+        this.props.onAuth(autFrom.email.value, autFrom.password.value, this.state.isSignup)
     }
 
     switchAuthHandler = () => {
@@ -117,6 +127,7 @@ class Auth extends Component {
     }
 
     render() {
+        
         const formElementsArray = Object.keys(this.state.authForm).map((key) => {
             return { id: key, config: this.state.authForm[key] }
         })
@@ -149,8 +160,14 @@ class Auth extends Component {
         if (this.props.error) {
             errorMessage = <p>{this.props.error.message} </p>
         }
+        let authenticated = null
+        if (this.props.token) {
+            authenticated = <Redirect to={this.props.authRedirectPath} />
+
+        }
         return (
             <div className={classes.Auth} >
+                {authenticated}
                 {errorMessage}
                 {form}
             </div>

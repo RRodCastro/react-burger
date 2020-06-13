@@ -14,7 +14,8 @@ const mapStateToProps = (state) => {
     return {
         ingredients: state.burgerBuilder.ingredients,
         totalPrice: state.burgerBuilder.totalPrice,
-        error: state.burgerBuilder.error
+        error: state.burgerBuilder.error,
+        token: state.auth.token
     }
 }
 
@@ -23,7 +24,8 @@ const mapDispatchToProps = (dispatch) =>{
         onIngredientAdd: (ingredientName) => dispatch(actions.addIngredient(ingredientName)),
         onIngredientRemove: (ingredientName) => dispatch(actions.removeIngredient(ingredientName)),
         onFetchIngredients: () => dispatch(actions.fetchIngredients()),
-        onInitPurchase: () => dispatch(actions.purchaseInit())
+        onInitPurchase: () => dispatch(actions.purchaseInit()),
+        onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirect(path))
     }
 }
 
@@ -50,7 +52,13 @@ class BurguerBuilder extends Component {
         this.props.onIngredientAdd(type)
     }
     onOrderHandler = () => {
-        this.setState({ showOrderModal: true })
+        if (this.props.token) {
+            this.setState({ showOrderModal: true })
+        }
+        else {
+            this.props.onSetAuthRedirectPath("/checkout")
+            this.props.history.push({ pathname: "/auth" })
+        }
     }
 
     onHideOrderModal = () => {
@@ -91,6 +99,7 @@ class BurguerBuilder extends Component {
                                         disabled={disabledIngredients}
                                         purchasable={this.isPurchasable()}
                                         onOrderHandler={() => this.onOrderHandler()}
+                                        isAuth={ this.props.token !== null }
                                     />
                                 </Aux> :
                                 <Spinner />
